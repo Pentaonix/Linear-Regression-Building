@@ -61,7 +61,35 @@ def GradientDescent(X,y,alpha=0.02,iter=5000): #giá trị mặc định của a
         J_hist[i, 0] = i
         #lưu lại J hiện tại
         J_hist[i, 1] = cost
-    print("min value is:", min(J_hist[:,1]))
-    print(J_hist)
+    # print("min value is:", min(J_hist[:,1]))
+    # print(J_hist)
     yield theta
     yield J_hist
+
+def Normalize(X):
+    #tạo copy của X (tham chiếu X) để không ảnh hưởng trực tiếp đến X (tham trị).
+    n = np.copy(X)
+    #x0 đầu tiên giả = 100
+    n[0,0] = 100
+    #tính std cho từng feature x
+    s = np.std(n,0,dtype = np.float64)
+    #tính mean cho từng feature x
+    mu = np.mean(n,0)
+    n = (n-mu)/s
+    #gán lại x0 = 1
+    n[:,0] = 1
+    yield n
+    yield mu
+    yield s
+
+def Loadtxt(path):
+    try:
+        raw = np.loadtxt(path,delimiter = ",")
+        X = np.zeros((np.size(raw,0),np.size(raw,1)))
+        X[:,0] = 1
+        X[:,1:] = raw[:,:-1]
+        y = raw[:,-1]
+        yield X
+        yield y
+    except:
+        return 0
