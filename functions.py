@@ -81,6 +81,9 @@ def Normalize(X):
     yield n
     yield mu
     yield s
+    
+def NormEqn(X,y):
+    return np.linalg.pinv(X.T @ X) @ (X.T @ y)
 
 def Loadtxt(path):
     try:
